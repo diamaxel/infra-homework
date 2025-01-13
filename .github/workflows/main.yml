@@ -12,3 +12,4 @@ jobs:
         uses: actions/setup-node@v4.1.0
         with: 
           cache: yarn
+          cache-dependency-path: yarn.lock
