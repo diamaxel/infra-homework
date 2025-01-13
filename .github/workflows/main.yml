@@ -6,8 +6,7 @@ jobs:
   dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup node.js
         uses: actions/setup-node@v4.1.0
@@ -21,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: dependencies
-    steps: 
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -33,25 +32,43 @@ jobs:
 
       - name: Install JS dependencies
         run: yarn install
-    
+
       - name: build
         run: yarn build
-    
 
   linters:
     runs-on: ubuntu-latest
     needs: dependencies
-    steps: 
-     - name: Checkout code
-       uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-     - name: Setup node.js
-       uses: actions/setup-node@v4.1.0
-       with:
-        node-version: 23.5.0
-        cache: yarn
+      - name: Setup node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 23.5.0
+          cache: yarn
 
-     - name: Install JS dependencies
-       run: yarn install
-     - name: lint
-       run: yarn linters
+      - name: Install JS dependencies
+        run: yarn install
+      - name: lint
+        run: yarn linters
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 23.5.0
+          cache: yarn
+
+      - name: Install JS dependencies
+        run: yarn install
+
+      - name: deploy
+        run: yarn deploy
