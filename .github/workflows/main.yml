@@ -1,20 +1,34 @@
 on:
   push:
     branches:
-    - main
-jobs: 
-  dependencies: 
+      - main
+jobs:
+  dependencies:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup node.js
         uses: actions/setup-node@v4.1.0
-        with: 
+        with:
           node-version: 23.5.0
           cache: yarn
-    
+
       - name: Install JS dependencies
         run: yarn install
 
+  build:
+    runs-on: ubuntu-latest
+    needs: dependencies
+    steps: 
+      - name: build
+        run: yarn build
+    
+
+  linters:
+    runs-on: ubuntu-latest
+    needs: dependencies
+    steps: 
+      - name: lint
+        run: yarn linters
